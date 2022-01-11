@@ -1,0 +1,43 @@
+{
+  "name": "valorina",
+  "version": "1.1.0",
+  "description": "Discord bot to never miss a Valorant skin drop!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Valorina/Valorina.git"
+  },
+  "keywords": [
+    "bot",
+    "discordjs",
+    "valorant",
+    "gaming",
+    "shop",
+    "store",
+    "discord",
+    "utility"
+  ],
+  "author": "@Sanjaybaskaran01 & @Mannan-Goyal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Valorina/Valorina/issues"
+  },
+  "homepage": "https://github.com/Valorina/Valorina#readme",
+  "dependencies": {
+    "discord.js": "^13.5.1",
+    "dotenv": "^10.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.6.0"
+  }
+}
