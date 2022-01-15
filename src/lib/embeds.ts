@@ -1,18 +1,14 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 
-export const smallEmbed = (title: string, description: string): MessageEmbed => {
-    const embed: MessageEmbed = new MessageEmbed().setColor('RED').setTitle(title).setDescription(description);
+export const embedTemplate = (title: string, description: string, url?: string): MessageEmbed => {
+    if (!url){
+        const embed : MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description);
+        return embed;
+    }
+    const embed : MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description).setThumbnail(url);
     return embed;
 };
 
-export const thumbnailEmbed = (title: string, description: string, url: string): MessageEmbed => {
-    const embed: MessageEmbed = new MessageEmbed()
-        .setTitle(title)
-        .setColor('RED')
-        .setDescription(description)
-        .setThumbnail(url);
-    return embed;
-};
 export const exceptionEmbed = (): MessageEmbed => {
     const embed: MessageEmbed = new MessageEmbed()
         .setTitle('Something went wrong :(')
