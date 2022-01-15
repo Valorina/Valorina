@@ -1,8 +1,8 @@
-import { Client, CommandInteraction } from 'discord.js';
+import { Client, Interaction } from 'discord.js';
 import { exceptionEmbed } from '../lib/embeds';
 export default {
     name: 'interactionCreate',
-    async execute(interaction: CommandInteraction, client: Client) {
+    async execute(interaction: Interaction, client: Client) {
         if (!interaction.isCommand()) return;
 
         const { default: command } = client.commands.get(interaction.commandName);
@@ -12,7 +12,7 @@ export default {
         try {
             await command.execute(interaction);
         } catch (error) {
-            await interaction.channel?.send({ embeds: [exceptionEmbed()] });
+            await interaction.reply({ embeds: [exceptionEmbed()] });
         }
     },
 };
