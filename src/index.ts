@@ -8,7 +8,7 @@ import { envHandler } from './lib/errors';
 // const TOKEN: string = envHandler(process.env.TOKEN);
 
 // DEV TOKEN
-const TOKEN: string = envHandler(process.env.DEV_TOKEN);
+const TOKEN: string = envHandler(process.env.DEV_TOKEN_2);
 const clientId: string = envHandler(process.env.DEV_CLIENT_ID);
 const guildId: string = envHandler(process.env.GUILD_ID);
 
