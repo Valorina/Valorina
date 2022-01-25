@@ -10,15 +10,7 @@ export enum region {
 export interface User {
     username: string;
     password: string;
-    discord_id: string;
+    discordId: string;
     region: region;
     reminders?: string[];
-}
-
-// Used in /api/auth.ts for returning Headers object
-export interface Headers {
-    'Authorization': string;
-    'X-Riot-Entitlements-JWT': string;
-    'X-Riot-ClientPlatform': string;
-    'X-Riot-ClientVersion': string;
 }

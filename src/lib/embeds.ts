@@ -1,13 +1,18 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 
 export const embedTemplate = (title: string, description: string, url?: string): MessageEmbed => {
-    if (!url){
-        const embed : MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description);
+    if (!url) {
+        const embed: MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description);
         return embed;
     }
-    const embed : MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description).setThumbnail(url);
+    const embed: MessageEmbed = new MessageEmbed()
+        .setTitle(title)
+        .setColor('RED')
+        .setDescription(description)
+        .setThumbnail(url);
     return embed;
 };
+export const notFoundEmbed = embedTemplate('User not found', 'User does not exist in our DB Use /adduser to add user');
 
 export const exceptionEmbed = (): MessageEmbed => {
     const embed: MessageEmbed = new MessageEmbed()

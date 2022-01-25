@@ -5,7 +5,7 @@ import { Routes } from 'discord-api-types/v9';
 
 export const deployCommands = async (TOKEN: string, clientId: string, guildId?: string): Promise<void> => {
     const commands: string[] = [];
-    const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+    const commandFiles: string[] = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
     for (const file of commandFiles) {
         const command = require(`../commands/${file}`);
         commands.push(command.default.data.toJSON());

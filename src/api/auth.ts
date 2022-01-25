@@ -1,10 +1,9 @@
-import axios, { AxiosResponse, AxiosInstance } from 'axios';
+import axios, { AxiosResponse, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
 import queryString from 'query-string';
-import { Headers } from '../types';
 
-export const authorize = async (username: string, password: string): Promise<{ headers: Headers; userId: string; }> => {
+export const authorize = async (username: string, password: string): Promise<{ headers: AxiosRequestHeaders; userId: string; }> => {
     const jar: CookieJar = new CookieJar();
     const client: AxiosInstance = wrapper(axios.create({ jar }));
     await client.post(
@@ -66,7 +65,7 @@ export const authorize = async (username: string, password: string): Promise<{ h
         }
     );
 
-    const headers: Headers = {
+    const headers:AxiosRequestHeaders = {
         'Authorization': `Bearer ${accessToken}`,
         'X-Riot-Entitlements-JWT': entitlementsToken,
         'X-Riot-ClientPlatform': 'ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9',
