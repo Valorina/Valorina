@@ -1,0 +1,2 @@
+2022-01-17T14:25:07.250Z [31merror[39m: User: tranzalone, Discord Id: 585100449519108099, Command: adduser, ValidationError: region: `a` is not a valid enum value for path `region`.
+2022-01-17T14:27:28.217Z [31merror[39m: {User: a, Discord Id: 585100449519108099, Command: adduser, Error: auth_failure}

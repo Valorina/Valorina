@@ -5,15 +5,15 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 
 
-const clientId: string = envHandler(process.env.DEV_CLIENT_ID);
+const clientId: string = envHandler(process.env.DEV_CLIENT_ID_2);
 const guildId: string = envHandler(process.env.GUILD_ID);
-const TOKEN: string = envHandler(process.env.DEV_TOKEN);
+const TOKEN: string = envHandler(process.env.DEV_TOKEN_2);
 
 const commands: string[] = [];
-const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('../commands').filter((file) => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require(`../commands/${file}`);
     commands.push(command.default.data.toJSON());
 }
 
@@ -30,5 +30,4 @@ const rest = new REST({ version: '9' }).setToken(TOKEN);
         console.error(error);
     }
 })();
-
 

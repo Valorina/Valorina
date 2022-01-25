@@ -1,18 +1,23 @@
-import { Client, CommandInteraction } from 'discord.js';
+import { Client, Interaction } from 'discord.js';
 import { exceptionEmbed } from '../lib/embeds';
 export default {
     name: 'interactionCreate',
-    async execute(interaction: CommandInteraction, client: Client) {
-        if (!interaction.isCommand()) return;
+    async execute(interaction: Interaction, client: Client) {
+        if (interaction.isCommand()) {
+            const { default: command } = client.commands.get(interaction.commandName);
+            if (!command) return;
 
-        const { default: command } = client.commands.get(interaction.commandName);
-
-        if (!command) return;
-
-        try {
-            await command.execute(interaction);
-        } catch (error) {
-            await interaction.channel?.send({ embeds: [exceptionEmbed()] });
+            try {
+                await command.execute(interaction);
+            } catch (error) {
+                await interaction.channel?.send({ embeds: [exceptionEmbed()] });
+            }
+        }
+        else if(interaction.isSelectMenu()){
+            console.log(interaction);
+        }
+        else{
+            return;
         }
     },
 };

@@ -6,7 +6,7 @@ import fs from 'fs';
 // const TOKEN = process.env.TOKEN;
 
 // DEV TOKEN
-const TOKEN = process.env.DEV_TOKEN;
+const TOKEN = process.env.DEV_TOKEN_2;
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
