@@ -1,12 +1,18 @@
 import { Client, Intents, Collection } from 'discord.js';
 import './lib/env';
 import fs from 'fs';
+import { deployCommands } from './services/deployCommands';
+import { envHandler } from './lib/errors';
 
 // TOKEN
-// const TOKEN = process.env.TOKEN;
+// const TOKEN: string = envHandler(process.env.TOKEN);
 
 // DEV TOKEN
-const TOKEN = process.env.DEV_TOKEN_2;
+const TOKEN: string = envHandler(process.env.DEV_TOKEN_2);
+const clientId: string = envHandler(process.env.DEV_CLIENT_ID);
+const guildId: string = envHandler(process.env.GUILD_ID);
+
+deployCommands(TOKEN, clientId, guildId);
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 

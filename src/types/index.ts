@@ -17,7 +17,7 @@ export interface User {
 
 // Used in /api/auth.ts for returning Headers object
 export interface Headers {
-    'Authorization': string,
+    'Authorization': string;
     'X-Riot-Entitlements-JWT': string;
     'X-Riot-ClientPlatform': string;
     'X-Riot-ClientVersion': string;
