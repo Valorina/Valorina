@@ -7,6 +7,7 @@ export const deployCommands = async (TOKEN: string, clientId: string, guildId?: 
     const commands: string[] = [];
 
     const commandFiles: string[] = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
+    
     for (const file of commandFiles) {
         const command = require(`${commandDirPath}/${file}`);
         commands.push(command.default.data.toJSON());
@@ -14,12 +15,14 @@ export const deployCommands = async (TOKEN: string, clientId: string, guildId?: 
     }
 
     const rest = new REST({ version: '9' }).setToken(TOKEN);
+
     try {
         console.log('Started refreshing application (/) commands.');
-        if (guildId)
+        if (guildId) {
             await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
-        else
+        } else {
             await rest.put(Routes.applicationCommands(clientId), { body: commands });
+        }
         console.log('Successfully reloaded application (/) commands.');
     } catch (error) {
         console.error(error);
