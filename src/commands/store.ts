@@ -31,7 +31,7 @@ export default {
             if (interaction.options.data.length === 0) {
                 let acc_str = '';
                 users.map((user) => (acc_str = acc_str + user.username + '\n'));
-                let accounts_embed = embedTemplate('Accounts linked', acc_str);
+                const accounts_embed = embedTemplate('Accounts linked', acc_str);
                 await interaction.editReply({ embeds: [accounts_embed] });
                 return;
             }

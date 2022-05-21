@@ -19,7 +19,7 @@ export const getStore = async (username: string, password: string, region: regio
         url: `https://pd.${region}.a.pvp.net/store/v2/storefront/${userId}`,
         headers: headers,
     });
-    let skinEmbeds: MessageEmbed[] = [];
+    const skinEmbeds: MessageEmbed[] = [];
     for (const skin in skins) {
         const {
             data: { data },

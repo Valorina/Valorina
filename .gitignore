@@ -3,4 +3,4 @@ yarn-error.log
 .env
 dist/
 
-log/*.log
+src/log/*.log

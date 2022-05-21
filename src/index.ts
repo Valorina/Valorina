@@ -1,33 +1,23 @@
-import { Client, Intents, Collection } from 'discord.js';
-import './lib/env';
-import fs from 'fs';
+import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, TOKEN } from './config';
 import { deployCommands } from './services/deployCommands';
-import { envHandler } from './lib/errors';
-
-// TOKEN
-// const TOKEN: string = envHandler(process.env.TOKEN);
-
-// DEV TOKEN
-const TOKEN: string = envHandler(process.env.DEV_TOKEN_2);
-const clientId: string = envHandler(process.env.DEV_CLIENT_ID);
-const guildId: string = envHandler(process.env.GUILD_ID);
+import { Client, Collection, Intents } from 'discord.js';
+import fs from 'fs';
 
 deployCommands(TOKEN, clientId, guildId);
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
-
+const commandFiles = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require(`${commandDirPath}/${file}`);
     client.commands.set(command.default.data.name, command);
 }
 
-const eventFiles = fs.readdirSync('./events').filter((file) => file.endsWith('.js'));
+const eventFiles = fs.readdirSync(eventsDirPath).filter((file) => file.endsWith(FileExtension));
 
 for (const file of eventFiles) {
-    const { default: event } = require(`./events/${file}`);
+    const { default: event } = require(`${eventsDirPath}/${file}`);
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args));
     } else {
