@@ -1,14 +1,16 @@
 import axios, { AxiosResponse, AxiosInstance, AxiosRequestHeaders } from 'axios';
 import https from 'https';
 import queryString from 'query-string';
+import { URL } from 'url';
 import { riotClientPlatform, riotClientVersion } from '../config';
+import { LoginResponse } from '../types';
 
-export const authorize = async (
+const authorize = async (
     username: string,
     password: string,
 ): Promise<{ headers: AxiosRequestHeaders; userId: string }> => {
     const client: AxiosInstance = axios.create();
-    const res: AxiosResponse = await client.post(
+    const res: AxiosResponse = await client.post<{ headers: { 'set-cookie': string } }>(
         'https://auth.riotgames.com/api/v1/authorization',
         {
             client_id: 'play-valorant-web-prod',
@@ -27,20 +29,24 @@ export const authorize = async (
             }),
         },
     );
-
-    const cookies = res.headers['set-cookie']!.join('; ');
-
-    const response: AxiosResponse = await client.put(
+    const cookies = res.headers['set-cookie']?.join('; ');
+    const {
+        data: {
+            response: {
+                parameters: { uri },
+            },
+        },
+    } = await client.put<LoginResponse>(
         'https://auth.riotgames.com/api/v1/authorization',
         {
             type: 'auth',
-            username: username,
-            password: password,
+            username,
+            password,
         },
         {
             withCredentials: true,
             headers: {
-                Cookie: cookies,
+                Cookie: cookies as string,
                 'User-Agent': 'RiotClient/43.0.1.4195386.4190634 rso-auth (Windows;10;;Professional, x64)',
             },
             httpsAgent: new https.Agent({
@@ -49,23 +55,19 @@ export const authorize = async (
         },
     );
 
-    if (response.data.error) {
-        throw new Error(response.data.error);
-    }
-
-    const parsedUrl = new URL(response.data.response.parameters.uri);
+    const parsedUrl = new URL(uri);
     const hash = parsedUrl.hash.replace('#', '');
-    const { access_token } = queryString.parse(hash);
+    const { access_token: accessToken } = queryString.parse(hash);
 
     const {
         data: { entitlements_token: entitlementsToken },
-    } = await client.post(
+    } = await client.post<{ entitlements_token: string }>(
         'https://entitlements.auth.riotgames.com/api/token/v1',
         {},
         {
             withCredentials: true,
             headers: {
-                Authorization: `Bearer ${access_token}`,
+                Authorization: `Bearer ${accessToken as string}`,
                 'User-Agent': 'RiotClient/43.0.1.4195386.4190634 rso-auth (Windows;10;;Professional, x64)',
             },
             httpsAgent: new https.Agent({
@@ -76,22 +78,24 @@ export const authorize = async (
 
     const {
         data: { sub: userId },
-    } = await axios.post(
+    } = await axios.post<{ sub: string }>(
         'https://auth.riotgames.com/userinfo',
         {},
         {
             withCredentials: true,
             headers: {
-                Authorization: `Bearer ${access_token}`,
+                Authorization: `Bearer ${accessToken as string}`,
             },
         },
     );
 
     const headers: AxiosRequestHeaders = {
-        Authorization: `Bearer ${access_token}`,
+        Authorization: `Bearer ${accessToken as string}`,
         'X-Riot-Entitlements-JWT': entitlementsToken,
         'X-Riot-ClientPlatform': riotClientPlatform,
         'X-Riot-ClientVersion': riotClientVersion,
     };
     return { headers, userId };
 };
+
+export default authorize;

@@ -1,5 +1,6 @@
 import { Client, Interaction } from 'discord.js';
 import { exceptionEmbed } from '../lib/embeds';
+
 export default {
     name: 'interactionCreate',
     async execute(interaction: Interaction, client: Client) {

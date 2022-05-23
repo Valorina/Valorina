@@ -1,5 +1,5 @@
-import { envHandler } from './lib/env';
 import path from 'path';
+import { envHandler } from './lib/env';
 
 export const TOKEN: string = envHandler(process.env.DEV_TOKEN);
 export const clientId: string = envHandler(process.env.DEV_CLIENT_ID);

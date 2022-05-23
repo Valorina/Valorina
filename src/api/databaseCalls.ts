@@ -1,25 +1,16 @@
-import userModel from '../models/user.model';
 import { Document } from 'mongoose';
-import { User } from '../types';
+import userModel from '../models/user.model';
+import { Account, User } from '../types';
 
-export const getUsers = async (discordId: string): Promise<User[] | undefined> => {
-    const users: User[] = await userModel.find({ discordId: discordId });
-    if (users.length === 0) {
-        return;
-    }
+export const getUserAccounts = async (discordId: string): Promise<User | null> => {
+    const users: User | null = await userModel.findOne({ discordId });
     return users;
 };
 
-export const addUser = async (
-    username: string,
-    password: string,
-    discordId: string,
-    region: string,
-): Promise<Document> => {
-    return await userModel.create({
-        username,
-        password,
-        discordId,
-        region,
-    });
-};
+// TODO: Fix Error if user already exists
+export const addUser = async (user: User, account: Account): Promise<Document> =>
+    userModel.findOneAndUpdate(
+        { discordId: user.discordId, 'accounts.username': { $nin: [account.username] } },
+        { $push: { accounts: account } },
+        { upsert: true, new: true, setDefaultsOnInsert: true },
+    );

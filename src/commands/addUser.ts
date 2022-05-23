@@ -2,9 +2,9 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
 import { embedTemplate } from '../lib/embeds';
 import { addUser } from '../api/databaseCalls';
-import { authorize } from '../api/auth';
-import { region, User } from '../types';
-import logger from '../log/index';
+import authorize from '../api/auth';
+import { Region, User, Account } from '../types';
+// import logger from '../log/index';
 
 export default {
     data: new SlashCommandBuilder()
@@ -17,30 +17,36 @@ export default {
         ),
 
     async execute(interaction: CommandInteraction) {
-        const user: User = {
-            username: <string>interaction.options.data[0].value,
-            password: <string>interaction.options.data[1].value,
-            discordId: interaction.user.id,
-            region: <region>interaction.options.data[2].value,
-        };
         try {
-            await authorize(user.username, user.password);
-            await addUser(user.username, user.password, user.discordId, user.region);
+            const username = interaction.options.getString('username', true);
+            const password = interaction.options.getString('password', true);
+            const region = interaction.options.getString('region', true).toLowerCase();
+            if (!Object.values(Region).includes(region as unknown as Region)) {
+                throw new Error('Incorrect region entered');
+            }
+            const account: Account = { username, password, region: <Region>region };
+            const user: User = {
+                discordId: interaction.user.id,
+                accounts: [account],
+            };
+
+            await authorize(username, password);
+            await addUser(user, account);
             const embed = embedTemplate(
                 'Success',
-                `Added user with Username: ${interaction.options.data[0].value}`,
+                `Added user with Username: ${username}`,
                 'https://images-ext-1.discordapp.net/external/UOcDiZZ6DL2XZQWzjzu2mcCNm_fqGCYOLPi-8IJGjvc/https/emoji.gg/assets/emoji/confetti.gif?width=115&height=115',
             );
-            await interaction.reply({ embeds: [embed] });
-        }
- catch (err) {
-            logger.error(`{User: ${user.username}, Discord Id: ${user.discordId}, Command: adduser, ${err}}`);
+            return await interaction.reply({ embeds: [embed], ephemeral: true });
+        } catch (e: unknown) {
+            const err = e as Error;
+            // logger.error(`{User: ${user.username}, Discord Id: ${user.discordId}, Command: adduser, ${err}}`);
             const embed = embedTemplate(
                 'Error Adding User',
-                'There was a problem adding the User, please try again later or contact the developers on the support server.',
+                err.message,
                 'https://images-ext-2.discordapp.net/external/yK1PgRCTUvZvC2uoRZgdLC3pT6M8G4gX-WGTPIcfsCQ/https/i.imgur.com/au2Yx3O.mp4',
             );
-            await interaction.reply({ embeds: [embed] });
+            return await interaction.reply({ embeds: [embed], ephemeral: true });
         }
     },
 };

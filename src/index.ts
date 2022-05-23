@@ -1,7 +1,7 @@
-import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, TOKEN } from './config';
-import { deployCommands } from './services/deployCommands';
 import { Client, Collection, Intents } from 'discord.js';
 import fs from 'fs';
+import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, TOKEN } from './config';
+import deployCommands from './services/deployCommands';
 
 deployCommands(TOKEN, clientId, guildId);
 

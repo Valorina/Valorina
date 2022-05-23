@@ -29,21 +29,37 @@ export const helpEmbed: MessageEmbed = new MessageEmbed()
     .setTitle('Help')
     .setColor('RED')
     .setThumbnail('https://i.imgur.com/jnqBJFs.png')
-    .setDescription("Summary of all available commands")
+    .setDescription('Summary of all available commands')
     .addFields([
         { name: '/adduser', value: 'Adds your user', inline: false },
-        { name: '/store', value: 'Shows all the available weapon skins in your store', inline: false },
-        { name: '/bal', value: 'Shows the balance of your account', inline: false },
         {
-            name: '/setreminder',
-            value: 'Sets reminder of your favourite skin and notifies you if it is available in your store',
+            name: '/store',
+            value: 'Shows all the available weapon skins in your store',
             inline: false,
         },
-        { name: '/showreminder', value: 'Shows all the reminder that is set by user', inline: false },
-        { name: '/delreminder', value: 'Deletes the reminder that is set', inline: false },
-        { name: '/skins', value: 'Links to weapon skins available in-game', inline: false },
-        { name: '/updatepass', value: 'Updates the password', inline: false },
-        { name: '/deluser', value: 'Deletes the user from database', inline: false },
-        { name: '\u200B', value: 'Contribute to Valorina [here](https://github.com/Valorina/Valorina)', inline: false },
-        { name: '\u200B', value: 'Join our support server [here](https://discord.gg/zHTGSaAjp8)', inline: false },
+        // { name: '/bal', value: 'Shows the balance of your account', inline: false },
+        // {
+        //     name: '/setreminder',
+        //     value: 'Sets reminder of your favourite skin and notifies you if it is available in your store',
+        //     inline: false,
+        // },
+        // {
+        //     name: '/showreminder',
+        //     value: 'Shows all the reminder that is set by user',
+        //     inline: false,
+        // },
+        // { name: '/delreminder', value: 'Deletes the reminder that is set', inline: false },
+        // { name: '/skins', value: 'Links to weapon skins available in-game', inline: false },
+        // { name: '/updatepass', value: 'Updates the password', inline: false },
+        // { name: '/deluser', value: 'Deletes the user from database', inline: false },
+        {
+            name: '\u200B',
+            value: 'Contribute to Valorina [here](https://github.com/Valorina/Valorina)',
+            inline: false,
+        },
+        {
+            name: '\u200B',
+            value: 'Join our support server [here](https://discord.gg/zHTGSaAjp8)',
+            inline: false,
+        },
     ]);

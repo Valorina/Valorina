@@ -1,17 +1,17 @@
-import { commandDirPath, FileExtension } from '../config';
 import { Routes } from 'discord-api-types/v9';
 import { REST } from '@discordjs/rest';
 import fs from 'fs';
+import { commandDirPath, FileExtension } from '../config';
 
-export const deployCommands = async (TOKEN: string, clientId: string, guildId?: string): Promise<void> => {
+export default async (TOKEN: string, clientId: string, guildId?: string): Promise<void> => {
     const commands: string[] = [];
 
     const commandFiles: string[] = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
-    
+
     for (const file of commandFiles) {
         const command = require(`${commandDirPath}/${file}`);
         commands.push(command.default.data.toJSON());
-        console.log(`${command.default.data['name']} ✅`);
+        console.log(`${command.default.data.name} ✅`);
     }
 
     const rest = new REST({ version: '9' }).setToken(TOKEN);

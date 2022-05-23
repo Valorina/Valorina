@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { connectToDatabase } from '../services/database';
+import connectToDatabase from '../services/database';
 
 export default {
     name: 'ready',

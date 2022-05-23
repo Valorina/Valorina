@@ -1,5 +1,5 @@
 // For available regions
-export enum region {
+export enum Region {
     ap = 'ap',
     na = 'na',
     eu = 'eu',
@@ -7,10 +7,41 @@ export enum region {
 }
 
 // Used in /models/user.model.ts for defining schema
-export interface User {
+export interface Account {
     username: string;
     password: string;
+    region: Region;
+}
+
+export interface User {
     discordId: string;
-    region: region;
+    accounts: Account[];
+}
+
+export interface Reminders {
+    discordId: string;
     reminders?: string[];
+}
+
+export interface StoreResponse {
+    SkinsPanelLayout: {
+        SingleItemOffers: string[];
+        SingleItemOffersRemainingDurationInSeconds: number;
+    };
+}
+
+export interface SkinDataResponse {
+    data: {
+        displayName: string;
+        streamedVideo?: string;
+        displayIcon: string;
+    };
+}
+
+export interface LoginResponse {
+    response: {
+        parameters: {
+            uri: string;
+        };
+    };
 }
