@@ -1,9 +1,9 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { getUserAccounts } from '../api/databaseCalls';
+import { SlashCommandBuilder } from '@discordjs/builders';
 import { embedTemplate, notFoundEmbed } from '../lib/embeds';
-import getStore from '../api/store';
+import { getUserAccounts } from '../api/databaseCalls';
 import { Account } from '../types';
+import getStore from '../api/store';
 
 export default {
     data: new SlashCommandBuilder()
@@ -33,25 +33,21 @@ export default {
             await interaction.editReply({ embeds: [notFoundEmbed] });
             return;
         }
-        const username = interaction.options.getString('username');
         const { accounts } = user;
         if (accounts.length > 1) {
-            if (!username) {
-                let accStr = '';
-                accounts.map((user) => (accStr = `${accStr + user.username}\n`));
-                const accounts_embed = embedTemplate('Accounts linked', accStr);
-                await interaction.editReply({ embeds: [accounts_embed] });
+            const username = interaction.options.getString('username');
+            const selectedAccount: Account | undefined = accounts.find((account) => account.username === username);
+            if (!selectedAccount) {
+                const accStr = accounts.reduce<string>((total, curr) => `${total + curr.username}\n`, ' ');
+                const accountsEmbed = embedTemplate('Linked Accounts', accStr);
+                await interaction.editReply({ embeds: [accountsEmbed] });
                 return;
             }
-
-            const selectedUser: Account | undefined = accounts.find((item) => item.username === username);
-
-            if (!selectedUser) {
-                await interaction.editReply({ embeds: [notFoundEmbed] });
-                return;
-            }
-
-            const skinEmbeds = await getStore(selectedUser.username, selectedUser.password, selectedUser.region);
+            const skinEmbeds = await getStore(
+                selectedAccount.username,
+                selectedAccount.password,
+                selectedAccount.region,
+            );
             await interaction.editReply({ embeds: skinEmbeds });
             return;
         }

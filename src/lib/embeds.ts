@@ -2,7 +2,11 @@ import { MessageEmbed } from 'discord.js';
 
 export const embedTemplate = (title: string, description: string, url?: string): MessageEmbed => {
     if (!url) {
-        const embed: MessageEmbed = new MessageEmbed().setTitle(title).setColor('RED').setDescription(description);
+        const embed: MessageEmbed = new MessageEmbed()
+            .setTitle(title)
+            .setColor('RED')
+            .setDescription(description)
+            .setThumbnail('https://i.imgur.com/jnqBJFs.png');
         return embed;
     }
     const embed: MessageEmbed = new MessageEmbed()
@@ -12,7 +16,7 @@ export const embedTemplate = (title: string, description: string, url?: string):
         .setThumbnail(url);
     return embed;
 };
-export const notFoundEmbed = embedTemplate('User not found', 'User does not exist in our DB Use /adduser to add user');
+export const notFoundEmbed = embedTemplate('No Accounts found', 'Use /adduser to add an account');
 
 export const exceptionEmbed = (): MessageEmbed => {
     const embed: MessageEmbed = new MessageEmbed()
@@ -31,7 +35,7 @@ export const helpEmbed: MessageEmbed = new MessageEmbed()
     .setThumbnail('https://i.imgur.com/jnqBJFs.png')
     .setDescription('Summary of all available commands')
     .addFields([
-        { name: '/adduser', value: 'Adds your user', inline: false },
+        { name: '/adduser', value: 'Adds an account', inline: false },
         {
             name: '/store',
             value: 'Shows all the available weapon skins in your store',

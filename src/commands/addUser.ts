@@ -34,7 +34,7 @@ export default {
             await addUser(user, account);
             const embed = embedTemplate(
                 'Success',
-                `Added user with Username: ${username}`,
+                `Added account with username:\n ${username}`,
                 'https://images-ext-1.discordapp.net/external/UOcDiZZ6DL2XZQWzjzu2mcCNm_fqGCYOLPi-8IJGjvc/https/emoji.gg/assets/emoji/confetti.gif?width=115&height=115',
             );
             return await interaction.reply({ embeds: [embed], ephemeral: true });
@@ -42,7 +42,7 @@ export default {
             const err = e as Error;
             // logger.error(`{User: ${user.username}, Discord Id: ${user.discordId}, Command: adduser, ${err}}`);
             const embed = embedTemplate(
-                'Error Adding User',
+                'Error adding account',
                 err.message,
                 'https://images-ext-2.discordapp.net/external/yK1PgRCTUvZvC2uoRZgdLC3pT6M8G4gX-WGTPIcfsCQ/https/i.imgur.com/au2Yx3O.mp4',
             );

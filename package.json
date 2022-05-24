@@ -2,7 +2,7 @@
   "name": "valorina",
   "version": "1.1.0",
   "description": "Discord bot to never miss a Valorant skin drop!",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "NODE_ENV=production node dist/index.js",
     "dev": "NODE_ENV=development nodemon src/index.ts",
