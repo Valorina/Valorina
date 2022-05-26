@@ -1,3 +1,11 @@
+import {
+    ApplicationCommandChoicesOption,
+    BaseCommandInteraction,
+    Client,
+    CommandInteraction,
+    Interaction,
+} from 'discord.js';
+
 // For available regions
 export enum Region {
     ap = 'ap',
@@ -43,5 +51,20 @@ export interface LoginResponse {
         parameters: {
             uri: string;
         };
+    };
+}
+
+export interface CommandType {
+    default: {
+        data: ApplicationCommandChoicesOption;
+        execute: (args0: CommandInteraction) => Promise<BaseCommandInteraction>;
+    };
+}
+
+export interface EventType {
+    default: {
+        name: string;
+        once?: boolean;
+        execute: (client?: Client, ...args: [Client?, Interaction?]) => Promise<void>;
     };
 }

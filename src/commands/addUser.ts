@@ -1,10 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { embedTemplate } from '../lib/embeds';
+import { addedSuccess, embedTemplate } from '../lib/embeds';
 import { addUser } from '../api/databaseCalls';
 import authorize from '../api/auth';
 import { Region, User, Account } from '../types';
-// import logger from '../log/index';
+import logger from '../log/index';
 
 export default {
     data: new SlashCommandBuilder()
@@ -13,7 +13,16 @@ export default {
         .addStringOption((option) => option.setName('username').setDescription('Riot Username').setRequired(true))
         .addStringOption((option) => option.setName('password').setDescription('Riot Password').setRequired(true))
         .addStringOption((option) =>
-            option.setName('region').setDescription('Select region from: AP, EU, KR, NA').setRequired(true),
+            option
+                .setName('region')
+                .setDescription('Select region from: AP, EU, KR, NA')
+                .setRequired(true)
+                .setChoices([
+                    ['AP', 'ap'],
+                    ['EU', 'eu'],
+                    ['KR', 'kr'],
+                    ['NA', 'na'],
+                ]),
         ),
 
     async execute(interaction: CommandInteraction) {
@@ -32,15 +41,10 @@ export default {
 
             await authorize(username, password);
             await addUser(user, account);
-            const embed = embedTemplate(
-                'Success',
-                `Added account with username:\n ${username}`,
-                'https://images-ext-1.discordapp.net/external/UOcDiZZ6DL2XZQWzjzu2mcCNm_fqGCYOLPi-8IJGjvc/https/emoji.gg/assets/emoji/confetti.gif?width=115&height=115',
-            );
-            return await interaction.reply({ embeds: [embed], ephemeral: true });
+            return await interaction.reply({ embeds: [addedSuccess(username)], ephemeral: true });
         } catch (e: unknown) {
             const err = e as Error;
-            // logger.error(`{User: ${user.username}, Discord Id: ${user.discordId}, Command: adduser, ${err}}`);
+            logger.error(`Discord Id: ${interaction.user.id}, Command: adduser, ${err.message}}`);
             const embed = embedTemplate(
                 'Error adding account',
                 err.message,

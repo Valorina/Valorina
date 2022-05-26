@@ -29,6 +29,13 @@ export const exceptionEmbed = (): MessageEmbed => {
     return embed;
 };
 
+export const addedSuccess = (username: string) =>
+    embedTemplate(
+        'Success',
+        `Added account with username:\n ${username}`,
+        'https://images-ext-1.discordapp.net/external/UOcDiZZ6DL2XZQWzjzu2mcCNm_fqGCYOLPi-8IJGjvc/https/emoji.gg/assets/emoji/confetti.gif?width=115&height=115',
+    );
+
 export const helpEmbed: MessageEmbed = new MessageEmbed()
     .setTitle('Help')
     .setColor('RED')

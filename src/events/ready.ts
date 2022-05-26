@@ -1,4 +1,5 @@
 import { Client } from 'discord.js';
+import logger from '../log';
 import connectToDatabase from '../services/database';
 
 export default {
@@ -6,6 +7,6 @@ export default {
     once: true,
     async execute(client: Client) {
         await connectToDatabase();
-        console.log(`Ready! Logged in as ${client.user!.tag}`);
+        logger.info(`Ready! Logged in as ${client.user!.tag}`);
     },
 };

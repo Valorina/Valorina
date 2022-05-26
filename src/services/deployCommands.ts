@@ -1,30 +1,35 @@
-import { Routes } from 'discord-api-types/v9';
-import { REST } from '@discordjs/rest';
 import fs from 'fs';
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
+import { CommandType } from '../types';
 import { commandDirPath, FileExtension } from '../config';
+import logger from '../log';
 
 export default async (TOKEN: string, clientId: string, guildId?: string): Promise<void> => {
-    const commands: string[] = [];
-
     const commandFiles: string[] = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
 
-    for (const file of commandFiles) {
-        const command = require(`${commandDirPath}/${file}`);
-        commands.push(command.default.data.toJSON());
-        console.log(`${command.default.data.name} ✅`);
-    }
-
+    const commands = await Promise.all(
+        commandFiles.map(async (file) => {
+            const command: Promise<CommandType> = import(`${commandDirPath}/${file}`) as Promise<CommandType>;
+            const {
+                default: { data },
+            } = await command;
+            logger.info(`${data.name} ✅`);
+            return data;
+        }),
+    );
     const rest = new REST({ version: '9' }).setToken(TOKEN);
 
     try {
-        console.log('Started refreshing application (/) commands.');
+        logger.info('Started refreshing application (/) commands.');
         if (guildId) {
             await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands });
         } else {
             await rest.put(Routes.applicationCommands(clientId), { body: commands });
         }
-        console.log('Successfully reloaded application (/) commands.');
+        logger.info('Successfully reloaded application (/) commands.');
     } catch (error) {
-        console.error(error);
+        const err = error as Error;
+        logger.error(`Module:deployCommands, Error: ${err.message}`);
     }
 };
