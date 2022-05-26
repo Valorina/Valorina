@@ -8,6 +8,7 @@ export const DB_CONN_STRING: string = envHandler('DB_CONN_STRING');
 export const FileExtension: string = envHandler('NODE_ENV') === 'production' ? '.js' : '.ts';
 export const commandDirPath = path.resolve(__dirname, './commands');
 export const eventsDirPath = path.resolve(__dirname, './events');
+export const logDirPath = path.resolve(__dirname, './log');
 
 export const riotClientPlatform =
     'ew0KCSJwbGF0Zm9ybVR5cGUiOiAiUEMiLA0KCSJwbGF0Zm9ybU9TIjogIldpbmRvd3MiLA0KCSJwbGF0Zm9ybU9TVmVyc2lvbiI6ICIxMC4wLjE5MDQyLjEuMjU2LjY0Yml0IiwNCgkicGxhdGZvcm1DaGlwc2V0IjogIlVua25vd24iDQp9';

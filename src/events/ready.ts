@@ -7,6 +7,6 @@ export default {
     once: true,
     async execute(client: Client) {
         await connectToDatabase();
-        logger.info(`Ready! Logged in as ${client.user!.tag}`);
+        if (client.user !== null) logger.info(`Ready! Logged in as ${client.user.tag}`);
     },
 };

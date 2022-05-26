@@ -1,15 +1,16 @@
 import { createLogger, format, transports } from 'winston';
+import { logDirPath } from '../config';
 
-const { printf, combine, timestamp, colorize } = format;
+const { printf, combine, timestamp } = format;
 
-const logFormat = printf(({ level, message, timestamp }) => `${timestamp} ${level}: ${message}`);
+const myFormat = printf(({ level, message, timestamp: tstamp }) => `${<number>tstamp} ${level}: ${message}`);
 
 const logger = createLogger({
     level: 'info',
-    format: combine(colorize(), timestamp(), logFormat),
+    format: combine(timestamp(), myFormat),
     transports: [
-        new transports.File({ filename: '../src/log/error.log', level: 'error' }),
-        new transports.File({ filename: '../src/log/general.log' }),
+        new transports.File({ filename: `${logDirPath}/error.log`, level: 'error' }),
+        new transports.File({ filename: `${logDirPath}/general.log` }),
         new transports.Console(),
     ],
 });

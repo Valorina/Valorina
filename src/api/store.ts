@@ -3,7 +3,7 @@ import { MessageEmbed } from 'discord.js';
 import { Region, StoreResponse, SkinDataResponse } from '../types';
 import authorize from './auth';
 import { embedTemplate } from '../lib/embeds';
-import { convertSeconds } from '../lib/convertSeconds';
+import convertSeconds from '../lib/convertSeconds';
 
 const getStore = async (username: string, password: string, region: Region): Promise<MessageEmbed[]> => {
     const { headers, userId } = await authorize(username, password);
