@@ -4,9 +4,10 @@ import { config } from 'dotenv';
 
 config({ path: resolve(__dirname, '../../.env') });
 
-const envHandler = (arg: string | undefined): string => {
-    if (!arg) throw new Error(`${arg} ENV is not set`);
-    return arg;
+const envHandler = (envName: string): string => {
+    const env = process.env[envName];
+    if (!env) throw new Error(`${envName} ENV is not set`);
+    return env;
 };
 
 export default envHandler;
