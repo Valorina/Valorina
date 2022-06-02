@@ -1,9 +1,9 @@
 import {
     ApplicationCommandChoicesOption,
-    BaseCommandInteraction,
     Client,
     CommandInteraction,
     Interaction,
+    SelectMenuInteraction,
 } from 'discord.js';
 
 // For available regions
@@ -57,7 +57,7 @@ export interface LoginResponse {
 export interface CommandType {
     default: {
         data: ApplicationCommandChoicesOption;
-        execute: (args0: CommandInteraction) => Promise<BaseCommandInteraction>;
+        execute: (args0: CommandInteraction) => Promise<void>;
     };
 }
 
@@ -66,5 +66,12 @@ export interface EventType {
         name: string;
         once?: boolean;
         execute: (client?: Client, ...args: [Client?, Interaction?]) => Promise<void>;
+    };
+}
+
+export interface SelectMenuType {
+    default: {
+        name: string;
+        execute: (args0: SelectMenuInteraction, args1: string[]) => Promise<void>;
     };
 }

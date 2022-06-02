@@ -1,10 +1,10 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { addedSuccess, embedTemplate } from '../lib/embeds';
-import { addUser } from '../api/databaseCalls';
-import authorize from '../api/auth';
-import { Region, User, Account } from '../types';
-import logger from '../log/index';
+import { addedSuccess, embedTemplate } from '../../lib/embeds';
+import { addUser } from '../../api/databaseCalls';
+import authorize from '../../api/auth';
+import { Region, User, Account } from '../../types';
+import logger from '../../log/index';
 
 export default {
     data: new SlashCommandBuilder()

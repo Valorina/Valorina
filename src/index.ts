@@ -1,8 +1,8 @@
 import { Client, Collection, Intents, Interaction } from 'discord.js';
 import fs from 'fs';
-import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, TOKEN } from './config';
+import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, selectMenusDirPath, TOKEN } from './config';
 import deployCommands from './services/deployCommands';
-import { CommandType, EventType } from './types';
+import { CommandType, EventType, SelectMenuType } from './types';
 
 const main = async () => {
     await deployCommands(TOKEN, clientId, guildId);
@@ -10,12 +10,22 @@ const main = async () => {
     const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
     client.commands = new Collection();
+    client.menus = new Collection();
     const commandFiles = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
 
     await Promise.all(
         commandFiles.map(async (file) => {
             const command: CommandType = (await import(`${commandDirPath}/${file}`)) as CommandType;
             client.commands.set(command.default.data.name, command);
+        }),
+    );
+
+    const selectMenuFiles = fs.readdirSync(selectMenusDirPath).filter((file) => file.endsWith(FileExtension));
+
+    await Promise.all(
+        selectMenuFiles.map(async (file) => {
+            const selectMenu = (await import(`${selectMenusDirPath}/${file}`)) as SelectMenuType;
+            client.menus.set(selectMenu.default.name, selectMenu);
         }),
     );
 

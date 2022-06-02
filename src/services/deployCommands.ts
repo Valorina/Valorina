@@ -1,8 +1,8 @@
 import fs from 'fs';
 import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
-import { CommandType } from '../types';
 import { commandDirPath, FileExtension } from '../config';
+import { CommandType } from '../types';
 import logger from '../log';
 
 export default async (TOKEN: string, clientId: string, guildId?: string): Promise<void> => {
@@ -10,10 +10,10 @@ export default async (TOKEN: string, clientId: string, guildId?: string): Promis
 
     const commands = await Promise.all(
         commandFiles.map(async (file) => {
-            const command: Promise<CommandType> = import(`${commandDirPath}/${file}`) as Promise<CommandType>;
+            const command: CommandType = (await import(`${commandDirPath}/${file}`)) as CommandType;
             const {
                 default: { data },
-            } = await command;
+            } = command;
             logger.info(`${data.name} ✅`);
             return data;
         }),

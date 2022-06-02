@@ -8,7 +8,8 @@
     "dev": "NODE_ENV=development nodemon src/index.ts",
     "build": "NODE_ENV=production tsc -p .",
     "lint": "eslint --max-warnings 0 --ext .ts .",
-    "lint:fix": "eslint --max-warnings 0 --ext .ts --fix ."
+    "lint:fix": "eslint --max-warnings 0 --ext .ts --fix .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
