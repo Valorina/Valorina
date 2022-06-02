@@ -1,9 +1,9 @@
 import { SelectMenuInteraction } from 'discord.js';
 import { getUserAccounts } from '../../api/databaseCalls';
 import getStore from '../../api/store';
-import { Account, User } from '../../types';
+import { Account, SelectMenuType, User } from '../../types';
 
-export default {
+export = {
     name: 'userSelector',
     async execute(interaction: SelectMenuInteraction, args: [string, string]) {
         const flex = !!args[1];
@@ -15,4 +15,4 @@ export default {
         const skinEmbeds = await getStore(selectedAccount.username, selectedAccount.password, selectedAccount.region);
         await interaction.reply({ embeds: skinEmbeds, components: [], ephemeral: !flex });
     },
-};
+} as SelectMenuType;

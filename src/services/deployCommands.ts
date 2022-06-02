@@ -11,9 +11,7 @@ export default async (TOKEN: string, clientId: string, guildId?: string): Promis
     const commands = await Promise.all(
         commandFiles.map(async (file) => {
             const command: CommandType = (await import(`${commandDirPath}/${file}`)) as CommandType;
-            const {
-                default: { data },
-            } = command;
+            const { data } = command;
             logger.info(`${data.name} ✅`);
             return data;
         }),

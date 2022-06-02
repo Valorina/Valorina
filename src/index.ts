@@ -16,7 +16,7 @@ const main = async () => {
     await Promise.all(
         commandFiles.map(async (file) => {
             const command: CommandType = (await import(`${commandDirPath}/${file}`)) as CommandType;
-            client.commands.set(command.default.data.name, command);
+            client.commands.set(command.data.name, command);
         }),
     );
 
@@ -25,7 +25,7 @@ const main = async () => {
     await Promise.all(
         selectMenuFiles.map(async (file) => {
             const selectMenu = (await import(`${selectMenusDirPath}/${file}`)) as SelectMenuType;
-            client.menus.set(selectMenu.default.name, selectMenu);
+            client.menus.set(selectMenu.name, selectMenu);
         }),
     );
 
@@ -33,11 +33,11 @@ const main = async () => {
 
     await Promise.all(
         eventFiles.map(async (file) => {
-            const { default: event }: EventType = (await import(`${eventsDirPath}/${file}`)) as EventType;
+            const event: EventType = (await import(`${eventsDirPath}/${file}`)) as EventType;
             if (event.once) {
                 client.once(event.name, (...args: [Client]) => event.execute(...args));
             } else {
-                client.on(event.name, (...args: [Client, Interaction]) => event.execute(client, ...args));
+                client.on(event.name, (...args: [Interaction]) => event.execute(client, ...args));
             }
         }),
     );

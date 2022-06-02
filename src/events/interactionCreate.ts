@@ -1,14 +1,13 @@
 import { Client, Interaction } from 'discord.js';
 import { exceptionEmbed } from '../lib/embeds';
 import logger from '../log';
-import { CommandType, SelectMenuType } from '../types';
+import { CommandType, EventType, SelectMenuType } from '../types';
 
-export default {
+export = {
     name: 'interactionCreate',
     async execute(client: Client, interaction: Interaction): Promise<void> {
         if (interaction.isCommand()) {
-            const { default: command } = client.commands.get(interaction.commandName) as CommandType;
-
+            const command = client.commands.get(interaction.commandName) as CommandType;
             try {
                 await command.execute(interaction);
             } catch (error) {
@@ -23,7 +22,7 @@ export default {
         }
         if (interaction.isSelectMenu()) {
             const args = interaction.customId.split(';');
-            const { default: selectMenu } = client.menus.get(args[0]) as SelectMenuType;
+            const selectMenu = client.menus.get(args[0]) as SelectMenuType;
             try {
                 await selectMenu.execute(interaction, args);
             } catch (error) {
@@ -32,4 +31,4 @@ export default {
             }
         }
     },
-};
+} as EventType;

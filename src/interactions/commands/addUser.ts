@@ -3,10 +3,10 @@ import { CommandInteraction } from 'discord.js';
 import { addedSuccess, embedTemplate } from '../../lib/embeds';
 import { addUser } from '../../api/databaseCalls';
 import authorize from '../../api/auth';
-import { Region, User, Account } from '../../types';
+import { Region, User, Account, CommandType } from '../../types';
 import logger from '../../log/index';
 
-export default {
+export = {
     data: new SlashCommandBuilder()
         .setName('adduser')
         .setDescription('Register your user with Valorina')
@@ -53,4 +53,4 @@ export default {
             return await interaction.reply({ embeds: [embed], ephemeral: true });
         }
     },
-};
+} as CommandType;

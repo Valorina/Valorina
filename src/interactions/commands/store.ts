@@ -3,8 +3,9 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { notFoundEmbed } from '../../lib/embeds';
 import { getUserAccounts } from '../../api/databaseCalls';
 import getStore from '../../api/store';
+import { CommandType } from '../../types';
 
-export default {
+export = {
     data: new SlashCommandBuilder()
         .setName('store')
         .setDescription('Shows all the available weapon skins in your store')
@@ -39,4 +40,4 @@ export default {
         const skinEmbeds = await getStore(accounts[0].username, accounts[0].password, accounts[0].region);
         await interaction.editReply({ embeds: skinEmbeds });
     },
-};
+} as CommandType;

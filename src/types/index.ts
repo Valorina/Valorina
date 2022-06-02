@@ -1,10 +1,5 @@
-import {
-    ApplicationCommandChoicesOption,
-    Client,
-    CommandInteraction,
-    Interaction,
-    SelectMenuInteraction,
-} from 'discord.js';
+import { SlashCommandBuilder } from '@discordjs/builders';
+import { Client, CommandInteraction, Interaction, SelectMenuInteraction } from 'discord.js';
 
 // For available regions
 export enum Region {
@@ -55,23 +50,17 @@ export interface LoginResponse {
 }
 
 export interface CommandType {
-    default: {
-        data: ApplicationCommandChoicesOption;
-        execute: (args0: CommandInteraction) => Promise<void>;
-    };
+    data: SlashCommandBuilder;
+    execute: (args0: CommandInteraction) => Promise<void>;
 }
 
 export interface EventType {
-    default: {
-        name: string;
-        once?: boolean;
-        execute: (client?: Client, ...args: [Client?, Interaction?]) => Promise<void>;
-    };
+    name: string;
+    once?: boolean;
+    execute: (args0: Client, args1?: Interaction) => Promise<void>;
 }
 
 export interface SelectMenuType {
-    default: {
-        name: string;
-        execute: (args0: SelectMenuInteraction, args1: string[]) => Promise<void>;
-    };
+    name: string;
+    execute: (args0: SelectMenuInteraction, args1: string[]) => Promise<void>;
 }
