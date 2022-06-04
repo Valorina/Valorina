@@ -8,6 +8,12 @@ export = {
     once: true,
     async execute(client: Client) {
         await connectToDatabase();
-        if (client.user !== null) logger.info(`Ready! Logged in as ${client.user.tag}`);
+        if (client.user !== null) {
+            client.user.setActivity({
+                name: '/help',
+                type: 'LISTENING',
+            });
+            logger.info(`Ready! Logged in as ${client.user.tag}`);
+        }
     },
 } as EventType;
