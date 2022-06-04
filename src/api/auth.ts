@@ -3,7 +3,7 @@ import https from 'https';
 import queryString from 'query-string';
 import { URL } from 'url';
 import { riotClientPlatform, riotClientVersion } from '../config';
-import { LoginResponse } from '../types';
+import { LoginFailureResponse, LoginSuccessResponse } from '../types';
 
 const authorize = async (
     username: string,
@@ -30,13 +30,7 @@ const authorize = async (
         },
     );
     const cookies = res.headers['set-cookie']?.join('; ');
-    const {
-        data: {
-            response: {
-                parameters: { uri },
-            },
-        },
-    } = await client.put<LoginResponse>(
+    const { data } = await client.put<LoginSuccessResponse | LoginFailureResponse>(
         'https://auth.riotgames.com/api/v1/authorization',
         {
             type: 'auth',
@@ -54,8 +48,8 @@ const authorize = async (
             }),
         },
     );
-
-    const parsedUrl = new URL(uri);
+    if (data.error === 'auth_failure') throw new Error("Your login credentials don't match an account in our system");
+    const parsedUrl = new URL(data.response.parameters.uri);
     const hash = parsedUrl.hash.replace('#', '');
     const { access_token: accessToken } = queryString.parse(hash);
 

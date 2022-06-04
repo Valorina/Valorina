@@ -1,4 +1,4 @@
-import { Client, Collection, Intents, Interaction } from 'discord.js';
+import { Client, Collection, Interaction } from 'discord.js';
 import fs from 'fs';
 import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, selectMenusDirPath, TOKEN } from './config';
 import deployCommands from './services/deployCommands';
@@ -7,7 +7,7 @@ import { CommandType, EventType, SelectMenuType } from './types';
 const main = async () => {
     await deployCommands(TOKEN, clientId, guildId);
 
-    const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+    const client = new Client({ intents: [] });
 
     client.commands = new Collection();
     client.menus = new Collection();

@@ -41,12 +41,22 @@ export interface SkinDataResponse {
     };
 }
 
-export interface LoginResponse {
+export interface LoginSuccessResponse {
+    type: string;
     response: {
         parameters: {
             uri: string;
         };
     };
+    country: string;
+    error: never;
+}
+
+export interface LoginFailureResponse {
+    type: string;
+    error: string;
+    country: string;
+    response: never;
 }
 
 export interface CommandType {

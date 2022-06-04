@@ -1,9 +1,9 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { CommandInteraction } from 'discord.js';
-import { addedSuccess, embedTemplate } from '../../lib/embeds';
+import { accountExists, addedSuccess, embedTemplate } from '../../lib/embeds';
 import { addUser } from '../../api/databaseCalls';
 import authorize from '../../api/auth';
-import { Region, User, Account, CommandType } from '../../types';
+import { Region, Account, CommandType } from '../../types';
 import logger from '../../log/index';
 
 export = {
@@ -18,10 +18,13 @@ export = {
                 .setDescription('Select region from: AP, EU, KR, NA')
                 .setRequired(true)
                 .setChoices([
-                    ['AP', 'ap'],
-                    ['EU', 'eu'],
-                    ['KR', 'kr'],
-                    ['NA', 'na'],
+                    ['Asia Pacific', 'ap'],
+                    ['Europe', 'eu'],
+                    ['Korea', 'kr'],
+                    ['North America', 'na'],
+                    ['Latin America', 'na'],
+                    ['Brazil', 'na'],
+                    ['Public Beta Environment', 'na'],
                 ]),
         ),
 
@@ -29,19 +32,13 @@ export = {
         try {
             const username = interaction.options.getString('username', true);
             const password = interaction.options.getString('password', true);
-            const region = interaction.options.getString('region', true).toLowerCase();
-            if (!Object.values(Region).includes(region as unknown as Region)) {
-                throw new Error('Incorrect region entered');
-            }
+            const region = interaction.options.getString('region', true);
             const account: Account = { username, password, region: <Region>region };
-            const user: User = {
-                discordId: interaction.user.id,
-                accounts: [account],
-            };
-
+            const discordId = interaction.user.id;
             await authorize(username, password);
-            await addUser(user, account);
-            return await interaction.reply({ embeds: [addedSuccess(username)], ephemeral: true });
+            const res = await addUser(discordId, account);
+            if (res) return await interaction.reply({ embeds: [addedSuccess(username)], ephemeral: true });
+            return await interaction.reply({ embeds: [accountExists(username)], ephemeral: true });
         } catch (e: unknown) {
             const err = e as Error;
             logger.error(`Discord Id: ${interaction.user.id}, Command: adduser, ${err.message}}`);

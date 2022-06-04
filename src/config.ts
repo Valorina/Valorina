@@ -1,8 +1,8 @@
 import path from 'path';
 import envHandler from './lib/env';
 
-export const TOKEN: string = envHandler('DEV_TOKEN');
-export const clientId: string = envHandler('DEV_CLIENT_ID');
+export const TOKEN: string = envHandler('DEV_TOKEN_2');
+export const clientId: string = envHandler('DEV_CLIENT_ID_2');
 export const guildId: string = envHandler('GUILD_ID');
 export const DB_CONN_STRING: string = envHandler('DB_CONN_STRING');
 export const FileExtension: string = envHandler('NODE_ENV') === 'production' ? '.js' : '.ts';

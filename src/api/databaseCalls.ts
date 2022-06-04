@@ -1,4 +1,3 @@
-import { Document } from 'mongoose';
 import userModel from '../models/user.model';
 import { Account, User } from '../types';
 
@@ -7,10 +6,20 @@ export const getUserAccounts = async (discordId: string): Promise<User | null> =
     return users;
 };
 
-// TODO: Fix Error if user already exists
-export const addUser = async (user: User, account: Account): Promise<Document> =>
-    userModel.findOneAndUpdate(
-        { discordId: user.discordId, 'accounts.username': { $nin: [account.username] } },
-        { $push: { accounts: account } },
-        { upsert: true, new: true, setDefaultsOnInsert: true },
-    );
+export const addUser = async (discordId: string, account: Account): Promise<boolean> => {
+    const userDb = await userModel.findOne({ discordId });
+    if (!userDb) {
+        await userModel.create({
+            discordId,
+            accounts: [account],
+        });
+        return true;
+    }
+    const { accounts } = userDb;
+    const dbAccount = accounts.find((Dbaccount) => Dbaccount.username === account.username);
+    if (dbAccount) {
+        return false;
+    }
+    await userModel.updateOne({ discordId }, { $push: { accounts: account } });
+    return true;
+};

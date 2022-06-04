@@ -36,6 +36,9 @@ export const addedSuccess = (username: string) =>
         'https://images-ext-1.discordapp.net/external/UOcDiZZ6DL2XZQWzjzu2mcCNm_fqGCYOLPi-8IJGjvc/https/emoji.gg/assets/emoji/confetti.gif?width=115&height=115',
     );
 
+export const accountExists = (username: string) =>
+    embedTemplate('Account Exists!', `account with username:\n ${username}`);
+
 export const helpEmbed: MessageEmbed = new MessageEmbed()
     .setTitle('Help')
     .setColor('RED')
