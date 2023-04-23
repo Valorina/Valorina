@@ -1,7 +1,7 @@
 import { Client, Interaction } from 'discord.js';
 import { exceptionEmbed } from '../lib/embeds';
 import logger from '../log';
-import { CommandType, EventType, SelectMenuType } from '../types';
+import { CommandType, EventType, ModalSubmitType, SelectMenuType } from '../types';
 
 export = {
     name: 'interactionCreate',
@@ -12,7 +12,7 @@ export = {
                 await command.execute(interaction);
             } catch (error) {
                 const err = error as Error;
-                logger.error(`Discord Id: ${interaction.user.id}, ${err.message}}`);
+                logger.error(`Module:Command Interaction, Discord Id: ${interaction.user.id}, ${err.message}}`);
                 if (interaction.replied) {
                     await interaction.editReply({ embeds: [exceptionEmbed()] });
                     return;
@@ -27,7 +27,17 @@ export = {
                 await selectMenu.execute(interaction, args);
             } catch (error) {
                 const err = error as Error;
-                logger.error(`Discord Id: ${interaction.user.id}, ${err.message}}`);
+                logger.error(`Module:Select Menu Interaction, Discord Id: ${interaction.user.id}, ${err.message}}`);
+            }
+        }
+        if (interaction.isModalSubmit()) {
+            const args = interaction.customId.split(';');
+            const submitModal = <ModalSubmitType>client.modals.get(args[0]);
+            try {
+                await submitModal.execute(interaction, args);
+            } catch (error) {
+                const err = <Error>error;
+                logger.error(`Module:Modal Submit Interaction, Discord Id: ${interaction.user.id}, ${err.message}}`);
             }
         }
     },

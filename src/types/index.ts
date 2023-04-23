@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { Client, CommandInteraction, Interaction, SelectMenuInteraction } from 'discord.js';
+import { Client, CommandInteraction, Interaction, ModalSubmitInteraction, SelectMenuInteraction } from 'discord.js';
 
 // For available regions
 export enum Region {
@@ -14,6 +14,12 @@ export interface Account {
     username: string;
     password: string;
     region: Region;
+    cookie: CookieData;
+}
+
+export interface CookieData {
+    cookie: string;
+    expiryAt: number;
 }
 
 export interface User {
@@ -42,21 +48,23 @@ export interface SkinDataResponse {
 }
 
 export interface LoginSuccessResponse {
-    type: string;
+    type: 'auth' | 'multifactor' | 'response';
     response: {
         parameters: {
             uri: string;
         };
     };
     country: string;
-    error: never;
+    cookies: string;
+    error: undefined;
 }
 
 export interface LoginFailureResponse {
-    type: string;
+    type: 'auth' | 'multifactor';
     error: string;
     country: string;
-    response: never;
+    response: undefined;
+    cookies: undefined;
 }
 
 export interface CommandType {
@@ -73,4 +81,9 @@ export interface EventType {
 export interface SelectMenuType {
     name: string;
     execute: (args0: SelectMenuInteraction, args1: string[]) => Promise<void>;
+}
+
+export interface ModalSubmitType {
+    name: string;
+    execute: (args0: ModalSubmitInteraction, args1: string[]) => Promise<void>;
 }

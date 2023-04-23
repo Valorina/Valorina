@@ -1,8 +1,8 @@
 import { Client, Collection, Interaction } from 'discord.js';
 import fs from 'fs';
-import { clientId, commandDirPath, eventsDirPath, FileExtension, guildId, selectMenusDirPath, TOKEN } from './config';
+import { clientId, eventsDirPath, FileExtension, guildId, interactionsDirPath, TOKEN } from './config';
 import deployCommands from './services/deployCommands';
-import { CommandType, EventType, SelectMenuType } from './types';
+import { CommandType, EventType, SelectMenuType, ModalSubmitType } from './types';
 
 const main = async () => {
     await deployCommands(TOKEN, clientId, guildId);
@@ -11,21 +11,37 @@ const main = async () => {
 
     client.commands = new Collection();
     client.menus = new Collection();
-    const commandFiles = fs.readdirSync(commandDirPath).filter((file) => file.endsWith(FileExtension));
+    client.modals = new Collection();
+    const commandFiles = fs
+        .readdirSync(`${interactionsDirPath}/commands`)
+        .filter((file) => file.endsWith(FileExtension));
 
     await Promise.all(
         commandFiles.map(async (file) => {
-            const command: CommandType = (await import(`${commandDirPath}/${file}`)) as CommandType;
+            const command: CommandType = (await import(`${interactionsDirPath}/commands/${file}`)) as CommandType;
             client.commands.set(command.data.name, command);
         }),
     );
 
-    const selectMenuFiles = fs.readdirSync(selectMenusDirPath).filter((file) => file.endsWith(FileExtension));
+    const selectMenuFiles = fs
+        .readdirSync(`${interactionsDirPath}/selectMenus`)
+        .filter((file) => file.endsWith(FileExtension));
 
     await Promise.all(
         selectMenuFiles.map(async (file) => {
-            const selectMenu = (await import(`${selectMenusDirPath}/${file}`)) as SelectMenuType;
+            const selectMenu = (await import(`${interactionsDirPath}/selectMenus/${file}`)) as SelectMenuType;
             client.menus.set(selectMenu.name, selectMenu);
+        }),
+    );
+
+    const submitModalFiles = fs
+        .readdirSync(`${interactionsDirPath}/modals`)
+        .filter((file) => file.endsWith(FileExtension));
+
+    await Promise.all(
+        submitModalFiles.map(async (file) => {
+            const submitModal = (await import(`${interactionsDirPath}/modals/${file}`)) as ModalSubmitType;
+            client.modals.set(submitModal.name, submitModal);
         }),
     );
 

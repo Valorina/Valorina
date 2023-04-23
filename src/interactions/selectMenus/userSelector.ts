@@ -1,18 +1,19 @@
-import { SelectMenuInteraction } from 'discord.js';
-import { getUserAccounts } from '../../api/databaseCalls';
-import getStore from '../../api/store';
-import { Account, SelectMenuType, User } from '../../types';
+// import { SelectMenuInteraction } from 'discord.js';
+// import { getUserAccounts } from '../../api/databaseCalls';
+// import getStore from '../../api/store';
+// import { Account, SelectMenuType, User } from '../../types';
 
-export = {
-    name: 'userSelector',
-    async execute(interaction: SelectMenuInteraction, args: [string, string]) {
-        const flex = !!args[1];
-        const discordId: string = interaction.user.id;
-        const user = await getUserAccounts(discordId);
-        const { accounts } = user as User;
-        const username = interaction.values[0];
-        const selectedAccount: Account = accounts.find((account) => account.username === username) as Account;
-        const skinEmbeds = await getStore(selectedAccount.username, selectedAccount.password, selectedAccount.region);
-        await interaction.reply({ embeds: skinEmbeds, components: [], ephemeral: !flex });
-    },
-} as SelectMenuType;
+// export = {
+//     name: 'userSelector',
+//     async execute(interaction: SelectMenuInteraction, args: [string, string]) {
+//         const flex = !!args[1];
+//         const discordId: string = interaction.user.id;
+//         const user = await getUserAccounts(discordId);
+//         const { accounts } = user as User;
+//         const username = interaction.values[0];
+//         const selectedAccount: Account = accounts.find((account) => account.username === username) as Account;
+//         const skinEmbeds = await getStore(selectedAccount.username, selectedAccount.password, selectedAccount.region);
+//         if (skinEmbeds === 'multifactor') return;
+//         await interaction.reply({ embeds: skinEmbeds, components: [], ephemeral: !flex });
+//     },
+// } as SelectMenuType;

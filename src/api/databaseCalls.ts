@@ -1,5 +1,5 @@
 import userModel from '../models/user.model';
-import { Account, User } from '../types';
+import { Account, CookieData, User } from '../types';
 
 export const getUserAccounts = async (discordId: string): Promise<User | null> => {
     const users: User | null = await userModel.findOne({ discordId });
@@ -22,4 +22,18 @@ export const addUser = async (discordId: string, account: Account): Promise<bool
     }
     await userModel.updateOne({ discordId }, { $push: { accounts: account } });
     return true;
+};
+
+export const getCookie = async (discordId: string, username: string): Promise<CookieData> => {
+    const userDb = await userModel.findOne({ discordId }).select({ accounts: { $elemMatch: { username } } });
+    if (!userDb) throw new Error('Not possible to be here');
+    return userDb.accounts[0].cookie;
+};
+
+export const updateCookie = async (discordId: string, username: string, cookie: string) => {
+    const userDb = await userModel.updateOne(
+        { discordId, 'accounts.username': username },
+        { $set: { 'accounts.$.cookie.cookie': cookie, 'accounts.$.cookie.expiredAt': Date.now() } },
+    );
+    console.log(userDb);
 };
